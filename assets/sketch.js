@@ -9,7 +9,15 @@ var score = 0;
 var life = 3;
 
 function setup() {
-    createCanvas(800, 600);
+    var vw, vh, standardSize;
+    if (windowHeight < windowWidth) {
+        standardSize = Math.floor(windowHeight / 16);
+    } else {
+        standardSize = Math.floor(windowWidth / 9);
+    }
+    vw = standardSize * 9;
+    vh = standardSize * 16;
+    createCanvas(vw, vh);
     bulletImage = loadImage('./assets/asteroids_bullet.png');
     shipImage = loadImage('./assets/asteroids_ship0001.png');
     particleImage = loadImage('./assets/asteroids_particle.png');
@@ -64,7 +72,17 @@ function draw() {
             reset();
         }
     }
+
     drawSprites();
+}
+
+function touchMoved() {
+    ship.attractionPoint(20, mouseX, height - 20);
+    var bullet = createSprite(ship.position.x, ship.position.y);
+    bullet.addImage(bulletImage);
+    bullet.setSpeed(20 + ship.getSpeed() / 2, ship.rotation);
+    bullet.life = 20;
+    bullets.add(bullet);
 }
 
 function createAsteroid(type, x, y) {
@@ -94,12 +112,12 @@ function asteroidHit(asteroid, bullet) {
         createAsteroid(newType, asteroid.position.x, asteroid.position.y);
     }
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 100; i++) {
         var p = createSprite(bullet.position.x, bullet.position.y);
         p.addImage(particleImage);
-        p.setSpeed(random(3, 5), random(360));
+        p.setSpeed(random(20, 100), random(360));
         p.friction = 0.95;
-        p.life = 15;
+        p.life = 2;
     }
 
     score++;
