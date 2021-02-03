@@ -21,6 +21,7 @@ function setup() {
     bulletImage = loadImage('./assets/asteroids_bullet.png');
     shipImage = loadImage('./assets/asteroids_ship0001.png');
     particleImage = loadImage('./assets/asteroids_particle.png');
+    starImage = loadImage('./assets/star.png');
     asteroids = new Group();
     bullets = new Group();
     reset();
@@ -60,24 +61,40 @@ function draw() {
             var t = allSprites[j];
             t.setSpeed(0);
         }
-        background(255);
-        textSize(width / 10);
-        fill(255, 0, 0);
-        text("GAME OVER", width / 2, 170);
-        textSize(width / 12);
-        text(`Score: ${score}`, width / 2, 300);
-        text("Press 'R' to restart", width / 2, 430);
-        removeAll()
-        if (keyWentDown('r')) {
-            reset();
-        }
+        endScreen("GAME OVER", 0)
     }
-
+    else if (asteroids.length === 0) {
+        endScreen("YOU WIN", 1)
+    }
     drawSprites();
 }
 
+function endScreen(str, color) {
+    background(255);
+    textSize(width / 10);
+    if (color === 0) fill(250, 0, 0);
+    else fill(0, 250, 0);
+    text(str, width / 2, height / 3);
+    textSize(width / 12);
+    text(`Score: ${score}`, width / 2, height / 2);
+    text("Tap to restart", width / 2, 0.7 * height);
+    removeAll()
+}
+
 function touchMoved() {
-    ship.attractionPoint(20, mouseX, height - 20);
+    ship.attractionPoint(20, mouseX, height - 30);
+    var bullet = createSprite(ship.position.x, ship.position.y);
+    bullet.addImage(bulletImage);
+    bullet.setSpeed(20 + ship.getSpeed() / 2, ship.rotation);
+    bullet.life = 20;
+    bullets.add(bullet);
+}
+
+function touchStarted() {
+    if (life <= 0 || asteroids.length === 0) {
+        reset();
+    }
+    ship.attractionPoint(100, mouseX, height - 30);
     var bullet = createSprite(ship.position.x, ship.position.y);
     bullet.addImage(bulletImage);
     bullet.setSpeed(20 + ship.getSpeed() / 2, ship.rotation);
@@ -134,20 +151,30 @@ function decLife(ship, asteroid) {
 function reset() {
     score = 0;
     life = 3;
-    ship = createSprite(width / 2, height - 20);
+    ship = createSprite(width / 2, height - 30);
     ship.maxSpeed = 60;
     ship.friction = 0.7;
     ship.rotation = 270;
     ship.setCollider('circle', 0, 0, 20);
-    ship.addImage(shipImage);
+    // ship.addImage(shipImage);
     // ship.addImage('normal', shipImage);
-    // ship.addAnimation('thrust', './assets/asteroids_ship0002.png', './assets/asteroids_ship0007.png');
+    ship.addAnimation('thrust', './assets/asteroids_ship0002.png', './assets/asteroids_ship0007.png');
     asteroids.removeSprites();
     for (var i = 0; i < 8; i++) {
         var ang = random(360);
         var px = width / 2 + 0.4 * width * cos(radians(ang));
-        var py = height / 2 + 0.4 * height * sin(radians(ang));
+        var py = 0.1 * height * sin(radians(ang));
         createAsteroid(3, px, py);
+    }
+    for (var i = 0; i < 30; i++) {
+        var ang = random(360);
+        var px = width * cos(radians(ang));
+        var py = height * sin(radians(ang));
+        var star = createSprite(px, py);
+        // star.addImage(starImage)
+        star.draw = function () { var size = random(2, 5); fill(255, 255, 0); ellipse(0, 0, size, size) }
+        star.setSpeed(1, 90);
+        star.rotationSpeed = 0.5;
     }
 }
 
