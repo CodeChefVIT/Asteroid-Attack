@@ -4,10 +4,10 @@
 # Asteroid Attack
 
 > <Subtitle>
-> A 2D game where your spaceship is under attck by asteroids.. made with p5.js & p5Play for a webinar on basics of Game Dev with JS
+> A 2D game where your spaceship is under attack by asteroids made with p5.js & p5Play for a webinar on basics of Game Dev with JavaScript.
 
 ---
-[![UI ](https://img.shields.io/badge/User%20Interface-Link%20to%20UI-orange?style=flat-square&logo=appveyor)](INSERT_UI_LINK_HERE)
+[![UI ](https://img.shields.io/badge/User%20Interface-Link%20to%20UI-orange?style=flat-square&logo=appveyor)](https://asteroid-attack.codechefvit.com)
 [![Webinar ](https://img.shields.io/badge/Webinar%20-Link%20to%20UI-red?style=flat-square&logo=youtube)](INSERT_UI_LINK_HERE)
 
 ## Instructions to run
@@ -15,7 +15,7 @@
 $ git clone https://github.com/CodeChefVIT/Asteroid-Attack
 $ cd Asteroid-Attack
 ```
-Just run index.html in your favourite browser
+Just run `index.html` in your favourite browser
 
 ## Contributors
 - <a href="https://github.com/gvinayakgupta">Vinayak Gupta</a>
